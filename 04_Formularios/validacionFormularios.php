@@ -132,7 +132,7 @@
                 $err_apellido2 = "El apellido es obligatorio";
             } else {
                 if(strlen($tmp_apellido2 < 2) || strlen($tmp_apellido2) > 40){
-                    $err_apellido2 = "El apellido debe de tener entre 4 y 60 caracteres";
+                    $err_apellido2 = "El apellido debe de tener entre 2 y 40 caracteres";
                 } else {
                     // letras, esacios en blanco y tildes
                     $patron = "/^[a-zA-Z áéíóúÁÉÍÓÚñÑüÜ]+$/";

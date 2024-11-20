@@ -26,7 +26,6 @@
             return $salida;
         }
 
-        $estudios = ["Ghibli", "WIT", "Kyoto_Animation", "Trigger", "MAPPA"]
     ?>
 
     <div class="container">
@@ -44,7 +43,16 @@
                 }
                 $tmp_num_temporadas = depurar($_POST ["num_temporadas"]);
 
+                /**
+                 * $_FILES -> que es un array BIDIMENSIONAL
+                 */
 
+                //var_dump($_FILES["imagen"]);
+                $nombre_imagen = $_FILES["imagen"]["name"];
+                $ubicacion_temporal = $_FILES["imagen"]["tmp_name"];
+                $ubicacion_final = "./imagenes/$nombre_imagen";
+
+                move_uploaded_file($ubicacion_temporal, $ubicacion_final);
 
                 if($tmp_titulo == ""){
                     $err_titulo = "El titulo es obligatorio";
@@ -93,35 +101,46 @@
                         }
                     }
                 }
-
-
-
             }
+
+            $sql = "SELECT * FROM estudios ORDER BY nombre_estudio";
+            $resultado = $_conexion -> query($sql);
+            $estudios = [];
+
+
+            while($fila = $resultado -> fetch_assoc()){
+                array_push($estudios, $fila["nombre_estudio"]);
+            }
+            
+
         ?>
 
-        <form class="col-6" action="" method="post">
+        <h1>Crear un nuevo anime</h1>
+
+        <a class="btn btn-secondary" href="index.php">Volver a tabla</a><br><br>
+
+        <form class="col-6" action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">Título</label>
                 <input type="text" class="form-control" name="titulo">
                 <?php if(isset($err_titulo)) echo "<span class='error'>$err_titulo</span>" ?>
             </div>
-          <!--  <div class="mb-3">
+            <div class="mb-3">
                 <label class="form-label">Nombre del Estudio</label>
+                <br>
                 <select name="nombre">
                 <option disabled selected hidden>--- Elige un estudio ---</option>
                 <?php
-                /*for($i = 0; $i < count($estudios); $i++){
-                    ?><option value = <?php echo $estudios[$i]; ?> > <?php echo $estudios[$i];?></option>
-                <?php }*/
+                    foreach($estudios as $estudio){ ?>
+                        <option value="<?php echo $estudio ?>">
+                            <?php echo $estudio;?>
+                        </option>
+                 <?php   }
                 ?>
                 </select>
-                <?php// if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
-            </div> -->
-            <div class="mb-3">
-                <label class="form-label">Nombre del Estudio</label>
-                <input type="text" class="form-control" name="nombre">
                 <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
-            </div>
+            </div> 
+            
             <div class="mb-3">
                 <label class="form-label">Año de Estreno</label>
                 <input type="text" class="form-control" name="anno_estreno">
@@ -132,14 +151,19 @@
                 <input type="text" class="form-control" name="num_temporadas">
                 <?php if(isset($err_num_temporadas)) echo "<span class='error'>$err_num_temporadas</span>" ?>
             </div>
+            <div class="mb-3"> 
+                <label class="form-label">Imagen</label>
+                <input type="file" class="form-control" name="imagen">
+            </div>
             <input class="btn btn-primary" type="submit" value="Enviar">
         </form>
 
         <?php
-        if(isset($titulo) && isset($nombre) && 
-            isset($anno__estreno) && isset($num_temporadas)){ 
-            $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas)
-                VALUES ('$titulo', '$nombre', '$anno__estreno', '$num_temporadas')";
+       if(isset($titulo) && isset($nombre) && 
+            isset($anno__estreno) && isset($num_temporadas) 
+            && isset($ubicacion_final)){ 
+            $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
+                VALUES ('$titulo', '$nombre', '$anno__estreno', '$num_temporadas', '$ubicacion_final')";
             $_conexion -> query($sql);    
         } 
        ?>

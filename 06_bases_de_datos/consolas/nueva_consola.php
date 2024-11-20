@@ -34,7 +34,9 @@
             if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                 $tmp_nombre = depurar($_POST ["nombre"]);
-                $tmp_ciudad = depurar($_POST ["ciudad"]);
+                $tmp_fabricante = depurar($_POST ["fabricante"]);
+                $tmp_generacion = depurar($_POST ["generacion"]);
+                $tmp_unidades_vendidas = depurar($_POST ["unidades_vendidas"]);
 
                 if($tmp_nombre == ""){
                     $err_nombre = "El nombre es obligatorio";
@@ -47,14 +49,36 @@
                     }
                 }
                     
-                if($tmp_ciudad == ""){
-                    $err_ciudad = "El nombre es obligatorio";
+                if($tmp_fabricante == ""){
+                    $err_fabricante = "El fabricante es obligatorio";
                 } else {
                     $patron = "/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
-                    if(!preg_match($patron, $tmp_ciudad)){
-                        $err_ciudad = "Formato de nombre de ciudad no Valido";
+                    if(!preg_match($patron, $tmp_fabricante)){
+                        $err_fabricante = "Formato de nombre de fabricante no Valido";
                     } else {
-                        $ciudad = $tmp_ciudad;
+                        $fabricante = $tmp_fabricante;
+                    }
+                }
+
+                if($tmp_generacion == ""){
+                    $err_generacion = "La generacion es obligatoria";
+                } else {
+                    $patron = "/^[0-9]{1,2}$/";
+                    if(!preg_match($patron, $tmp_generacion)){
+                        $err_generacion = "Formato de generacion no valido";
+                    } else {
+                        $generacion = $tmp_generacion;
+                    }
+                }
+
+                if($tmp_unidades_vendidas == ""){
+                    $unidades_vendidas= $tmp_unidades_vendidas;
+                } else {
+                    $patron = "/^[0-9]+$/";
+                    if(!preg_match($patron, $tmp_unidades_vendidas)){
+                        $err_unidades_vendidas = "Formato de unidades vendidas no valido";
+                    } else {
+                        $unidades_vendidas = $tmp_unidades_vendidas;
                     }
                 }
 
@@ -68,17 +92,27 @@
                 <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
             </div>
             <div class="mb-3">
-                <label class="form-label">Ciudad de la sede del Estudio</label>
-                <input type="text" class="form-control" name="ciudad">
+                <label class="form-label">Fabricante</label>
+                <input type="text" class="form-control" name="fabricante">
                 <?php if(isset($err_ciudad)) echo "<span class='error'>$err_ciudad</span>" ?>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Generacion</label>
+                <input type="text" class="form-control" name="generacion">
+                <?php if(isset($err_generacion)) echo "<span class='error'>$err_generacion</span>" ?>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Unidades Vendidas</label>
+                <input type="text" class="form-control" name="unidades_vendidas">
+                <?php if(isset($err_unidades_vendidas)) echo "<span class='error'>$err_unidades_vendidas</span>" ?>
             </div>
             <input class="btn btn-primary" type="submit" value="Enviar">
         </form>
 
         <?php
-        if(isset($ciudad) && isset($nombre)){ 
-            $sql = "INSERT INTO estudios (nombre_estudio, ciudad)
-                VALUES ('$nombre', '$ciudad')";
+        if(isset($fabricante) && isset($nombre) && isset($generacion) && isset($unidades_vendidas) ){ 
+            $sql = "INSERT INTO consolas (nombre, fabricante, generacion, unidades_vendidas)
+                VALUES ('$nombre', '$fabricante', '$generacion', '$unidades_vendidas')";
             $_conexion -> query($sql);    
         } 
        ?>

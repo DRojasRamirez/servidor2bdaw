@@ -33,28 +33,28 @@
 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-                $tmp_nombre = depurar($_POST ["nombre"]);
-                $tmp_ciudad = depurar($_POST ["ciudad"]);
+                $tmp_fabricante = depurar($_POST ["fabricante"]);
+                $tmp_pais = depurar($_POST ["pais"]);
 
-                if($tmp_nombre == ""){
-                    $err_nombre = "El nombre es obligatorio";
+                if($tmp_fabricante == ""){
+                    $err_fabricante = "El fabricante es obligatorio";
                 } else {
                     $patron = "/^[0-9A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
-                    if(!preg_match($patron, $tmp_nombre)){
-                        $err_nombre = "Formato de nombre no valido";
+                    if(!preg_match($patron, $tmp_fabricante)){
+                        $err_fabricante = "Formato de fabricante no valido";
                     } else {
-                        $nombre = $tmp_nombre;
+                        $fabricante = $tmp_fabricante;
                     }
                 }
                     
-                if($tmp_ciudad == ""){
-                    $err_ciudad = "El nombre es obligatorio";
+                if($tmp_pais == ""){
+                    $err_pais = "El fabricante es obligatorio";
                 } else {
                     $patron = "/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/";
-                    if(!preg_match($patron, $tmp_ciudad)){
-                        $err_ciudad = "Formato de nombre de ciudad no Valido";
+                    if(!preg_match($patron, $tmp_pais)){
+                        $err_pais = "Formato de fabricante de pais no Valido";
                     } else {
-                        $ciudad = $tmp_ciudad;
+                        $pais = $tmp_pais;
                     }
                 }
 
@@ -63,22 +63,22 @@
 
         <form class="col-6" action="" method="post">
             <div class="mb-3">
-                <label class="form-label">Nombre del Estudio</label>
-                <input type="text" class="form-control" name="nombre">
-                <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
+                <label class="form-label">Fabricante</label>
+                <input type="text" class="form-control" name="fabricante">
+                <?php if(isset($err_fabricante)) echo "<span class='error'>$err_fabricante</span>" ?>
             </div>
             <div class="mb-3">
-                <label class="form-label">Ciudad de la sede del Estudio</label>
-                <input type="text" class="form-control" name="ciudad">
-                <?php if(isset($err_ciudad)) echo "<span class='error'>$err_ciudad</span>" ?>
+                <label class="form-label">Pais de la sede del fabricante</label>
+                <input type="text" class="form-control" name="pais">
+                <?php if(isset($err_pais)) echo "<span class='error'>$err_pais</span>" ?>
             </div>
             <input class="btn btn-primary" type="submit" value="Enviar">
         </form>
 
         <?php
-        if(isset($ciudad) && isset($nombre)){ 
-            $sql = "INSERT INTO estudios (nombre_estudio, ciudad)
-                VALUES ('$nombre', '$ciudad')";
+        if(isset($pais) && isset($fabricante)){ 
+            $sql = "INSERT INTO fabricantes (fabricante, pais)
+                VALUES ('$fabricante', '$pais')";
             $_conexion -> query($sql);    
         } 
        ?>

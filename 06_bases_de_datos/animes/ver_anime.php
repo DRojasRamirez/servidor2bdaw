@@ -45,8 +45,22 @@
             //echo "<h1>" . $_GET["id_anime"] . "</h1>";
 
             $id_anime = $_GET["id_anime"];
+            /*
             $sql ="SELECT * FROM animes WHERE id_anime = $id_anime";
-            $resultado = $_conexion -> query($sql);
+            $resultado = $_conexion -> query($sql);*/
+
+            //1. Prepare
+            $sql = $_conexion -> prepare("SELECT * FROM animes WHERE id_anime = ?");
+
+            //2. Binding
+            $sql -> bind_param("i", $id_anime);
+
+            //3. Execute
+            $sql -> execute();
+
+            //4. Retrieve
+            $resultado = $sql -> get_result();
+
 
         
 

@@ -23,7 +23,7 @@
             manejarPost($_conexion, $entrada);
             break;
         case "PUT":
-            echo json_encode(["metodo" => "put"]);
+            manejarUpdate($_conexion, $entrada);
             break;
         case "DELETE":
             manejarDelete($_conexion, $entrada);
@@ -34,13 +34,46 @@
     }
 
     function manejarGet($_conexion){
-        $sql = "SELECT * FROM estudios";
-        $stmt = $_conexion -> prepare($sql);
 
-        $stmt -> execute();
+        if(isset($_GET["ciudad"]) && isset($_GET["anno_fundacion"])){
 
-        $resultado = $stmt -> fetchALL(PDO::FETCH_ASSOC);
+            $sql = "SELECT * FROM estudios WHERE ciudad = :ciudad AND anno_fundacion = :anno_fundacion";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "ciudad" => $_GET["ciudad"],
+                "anno_fundacion" => $_GET["anno_fundacion"]
+            ]);
+
+        } else if(isset($_GET["ciudad"])){
+
+            $sql = "SELECT * FROM estudios WHERE ciudad = :ciudad";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "ciudad" => $_GET["ciudad"]
+            ]);
+
+        }else if(isset($_GET["anno_fundacion"])){
+
+            $sql = "SELECT * FROM estudios WHERE anno_fundacion = :anno_fundacion";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "anno_fundacion" => $_GET["anno_fundacion"]
+            ]);
+
+
+        } else {
+
+            $sql = "SELECT * FROM estudios";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute();
+
+        }
+
+        $resultado = $stmt -> fetchALL(PDO::FETCH_ASSOC); // Equivalente al getResult de Mysqli
         echo json_encode($resultado);
+
+      /*  $ciudad = $_GET["ciudad"];
+        echo json_encode([$mensaje => $ciudad]);*/
     }
 
     function manejarPost($_conexion, $entrada){
@@ -59,6 +92,29 @@
         } else {
             echo json_encode(["mensaje" => "Error al insertar el estudio"]);
         }
+    }
+
+    function manejarUpdate($_conexion, $entrada){
+
+        $sql = "UPDATE estudios SET 
+            ciudad = :ciudad,
+            anno_fundacion = :anno_fundacion
+            WHERE nombre_estudio = :nombre_estudio";
+
+        $stmt = $_conexion -> prepare($sql);
+
+        $stmt -> execute([
+            "ciudad" => $entrada["ciudad"],
+            "anno_fundacion" => $entrada["anno_fundacion"],
+            "nombre_estudio" => $entrada["nombre_estudio"]
+        ]);
+
+        if($stmt) {
+            echo json_encode(["mensaje" => "El estudio se ha actualizado correctamente"]);
+        } else {
+            echo json_encode(["mensaje" => "Error al actualizar el estudio"]);
+        }
+
     }
 
     function manejarDelete($_conexion, $entrada){

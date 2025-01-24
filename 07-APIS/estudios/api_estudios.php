@@ -4,7 +4,7 @@
     ini_set( "display_errors", 1 );    
 
     header("Content-Type: application/json");
-    include("conexion_anime_pdo.php");
+    include("../conexion_anime_pdo.php");
 
     $metodo = $_SERVER["REQUEST_METHOD"];
     $entrada = json_decode(file_get_contents("php://input"), true);

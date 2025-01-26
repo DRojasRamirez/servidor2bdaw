@@ -18,11 +18,6 @@
 
     $apiUrl = "https://api.jikan.moe/v4/top/anime";
 
-    if(!empty($_GET["ciudad"])){
-        $ciudad = $_GET["ciudad"];
-        $apiUrl = "$apiUrl?ciudad=$ciudad";
-    }
-
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $apiUrl);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -35,14 +30,26 @@
 
     ?>
 
-    <ol>
-        <?php
-        foreach($animes as $anime){ ?>
 
-        <li><?php echo $anime["title"] ?></li>
-
-      <?php } ?>
-    </ol>
+    <table>
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Nota</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                foreach($animes as $anime){ ?>
+                <tr>
+                    <td><?php echo $anime["title"] ?></td>
+                    <td><?php echo $anime["score"]?></td>
+                    <td><img src="<?php echo $anime["images"]["jpg"]["image_url"]?>"></td>
+                </tr>
+         <?php  } ?>
+        </tbody>
+    </table>
     
 </body>
 </html>

@@ -34,20 +34,28 @@
     <table>
         <thead>
             <tr>
-                <th>Titulo</th>
+                <th>Posición</th>
+                <th>Título</th>
                 <th>Nota</th>
                 <th>Imagen</th>
             </tr>
         </thead>
         <tbody>
-            <?php
-                foreach($animes as $anime){ ?>
+        <?php
+            foreach($animes as $anime) { ?>
                 <tr>
-                    <td><?php echo $anime["title"] ?></td>
-                    <td><?php echo $anime["score"]?></td>
-                    <td><img src="<?php echo $anime["images"]["jpg"]["image_url"]?>"></td>
+                    <td><?php echo $anime["rank"] ?></td>
+                    <td>
+                        <a href="anime.php?id=<?php echo $anime["mal_id"] ?>">
+                            <?php echo $anime["title"] ?>
+                        </a>
+                    </td>
+                    <td><?php echo $anime["score"] ?></td>
+                    <td>
+                        <img width="100px" src="<?php echo $anime["images"]["jpg"]["image_url"] ?>">
+                    </td>
                 </tr>
-         <?php  } ?>
+            <?php } ?>
         </tbody>
     </table>
     

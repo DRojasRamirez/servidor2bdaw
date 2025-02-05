@@ -18,7 +18,7 @@
     <?php
 
         if(!isset($_GET["id"])){
-            header("location: top_anime.php");
+            header("location: topAnimes.php");
         }
 
         $id = $_GET["id"];

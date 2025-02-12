@@ -25,4 +25,4 @@ Route::get('/hello', function () {
 
 Route::get("/coches", [CocheController::class, "index"]);
 
-Route::get("/marcas", [MarcaController::class, "index"]);
+Route::resource("/marcas", MarcaController::class);

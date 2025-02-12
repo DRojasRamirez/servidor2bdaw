@@ -4,25 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Coches</title>
+    <title>Marcas</title>
 </head>
 <body>
-    <h1>Lista de coches to wapa</h1>
+    <h1>Lista de marcas de leche</h1>
     <table>
         <thead>
             <tr>
-                <th>Modelo</th>
-                <th>Precio</th>
+                <th>Marca</th>
+                <th>Año de Fundación</th>
+                <th>País</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($coches as $coche)
+            @foreach($marcas as $marca)
                 <tr>
-                    <td>{{ $coche[1] }} {{ $coche[0] }} </td>
-                    <td>{{ $coche[2] }}</td>
+                    <td>{{ $marca -> marca}}</td>
+                    <td>{{ $marca -> anno_fundacion}}</td>
+                    <td>{{ $marca -> pais}}</td>
                 </tr>
             @endforeach
-        </tbody>
+        </tbody>        
     </table>
 </body>
 </html>
